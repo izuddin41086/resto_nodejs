@@ -1,32 +1,37 @@
 const db = require("../../models");
-const Products = db.products;
+const Profile = db.profile;
 
 exports.create = (req, res) => {
     // Validate request
-    if (!req.body.title) {
+    if (!req.body.name||!req.body.email||!req.body.phone) {
         res.status(400).send({ message: "Content can not be empty!" });
         return;
     }
 
     // Create a Tutorial
-    const product = new Products({
-        title: req.body.title,
-        description: req.body.description,
-        price: req.body.price,
-        pic: req.body.pic,
+    const cprofile = new Profile({
+        name: req.body.name,
+        address: req.body.address,
+        email: req.body.email,
+        phone: req.body.phone,
+        opening_hours: req.body.opening_hours,
+        wa: req.body.wa,
+        fb: req.body.fb,
+        twitter: req.body.twitter,
+        instagram: req.body.instagram,
         published: req.body.published ? req.body.published : false
     });
 
     // Save Tutorial in the database
-    product
-      .save(product)
+    cprofile
+      .save(cprofile)
       .then(data => {
         res.send(data);
       })
       .catch(err => {
         res.status(500).send({
           message:
-            err.message || "Some error occurred while creating the Product."
+            err.message || "Some error occurred while creating the profile."
         });
       });
 };
@@ -35,25 +40,25 @@ exports.findAll = (req, res) => {
     const title = req.query.title;
     var condition = title ? { title: { $regex: new RegExp(title), $options: "i" } } : {};
 
-    Products.find(condition).then(data => {
+    Profile.find(condition).then(data => {
         res.send(data);
     }).catch(err => {
         res.status(500).send({
             message:
-            err.message || "Some error occurred while retrieving products."
+            err.message || "Some error occurred while retrieving profile."
         });
     });
 };
 
 exports.findAllPublished = (req, res) => {
-    Products.find({ published: true })
+    Profile.find({ published: true })
     .then(data => {
         res.send(data);
     })
     .catch(err => {
         res.status(500).send({
         message:
-            err.message || "Some error occurred while retrieving products."
+            err.message || "Some error occurred while retrieving profile."
         });
     });
 };
@@ -61,40 +66,40 @@ exports.findAllPublished = (req, res) => {
 exports.findOne = (req, res) => {
     const id = req.params.id;
 
-    Products.findById(id)
+    Profile.findById(id)
     .then(data => {
     if (!data)
-        res.status(404).send({ message: "Not found Product with id " + id });
+        res.status(404).send({ message: "Not found profile with id " + id });
     else
         res.send(data);
     })
     .catch(err => {
     res
         .status(500)
-        .send({ message: "Error retrieving Product with id=" + id });
+        .send({ message: "Error retrieving profile with id=" + id });
     });
 };
 
 exports.update = (req, res) => {
     if (!req.body) {
         return res.status(400).send({
-        message: "Data to update can not be empty!"
+            message: "Data to update can not be empty!"
         });
     }
 
     const id = req.params.id;
 
-    Products.findByIdAndUpdate(id, req.body, { useFindAndModify: false })
+    Profile.findByIdAndUpdate(id, req.body, { useFindAndModify: false })
     .then(data => {
     if (!data) {
         res.status(404).send({
-        message: `Cannot update Product with id=${id}. Maybe Tutorial was not found!`
+        message: `Cannot update profile with id=${id}. Maybe Tutorial was not found!`
         });
-    } else res.send({ message: "Product was updated successfully." });
+    } else res.send({ message: "profile was updated successfully." });
     })
     .catch(err => {
         res.status(500).send({
-            message: "Error updating Product with id=" + id
+            message: "Error updating profile with id=" + id
         });
     });
 };
@@ -102,7 +107,7 @@ exports.update = (req, res) => {
 exports.delete = (req, res) => {
     const id = req.params.id;
 
-    Products.findByIdAndRemove(id)
+    Profile.findByIdAndRemove(id)
     .then(data => {
         if (!data) {
             res.status(404).send({
@@ -122,7 +127,7 @@ exports.delete = (req, res) => {
 };
 
 exports.deleteAll = (req, res) => {
-    Products.deleteMany({})
+    Profile.deleteMany({})
     .then(data => {
         res.send({
             message: `${data.deletedCount} Product were deleted successfully!`
@@ -131,7 +136,7 @@ exports.deleteAll = (req, res) => {
     .catch(err => {
         res.status(500).send({
             message:
-            err.message || "Some error occurred while removing all products."
+            err.message || "Some error occurred while removing all Profile."
         });
     });
 };
