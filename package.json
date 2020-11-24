@@ -1,0 +1,21 @@
+{
+  "name": "one-store",
+  "version": "1.0.0",
+  "description": "wawan punya toko",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "izuddin",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "cors": "^2.8.5",
+    "ejs": "^3.1.5",
+    "express": "^4.17.1",
+    "express-ejs-layouts": "^2.5.0",
+    "mongoose": "^5.10.15",
+    "nodemon": "^2.0.6"
+  }
+}

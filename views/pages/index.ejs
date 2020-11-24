@@ -1,0 +1,64 @@
+<header class="row tm-welcome-section">
+	<h2 class="col-12 text-center tm-section-title">Welcome to One Resto</h2>
+	<p class="col-12 text-center">The only one Resto with the best taste ! We serve for your order, Dine in or Take Away.</p>
+</header>
+<div class="tm-paging-links">
+	<nav>
+		<ul>
+			<li class="tm-paging-item"><a href="#" class="tm-paging-link active">Foods</a></li>
+			<li class="tm-paging-item"><a href="#" class="tm-paging-link">Beverages</a></li>
+		</ul>
+	</nav>
+</div>
+
+<div class="row tm-gallery">
+	<div id="tm-gallery-page-foods" class="tm-gallery-page">
+		<% ProductList.forEach(function(product){ %>
+			<article class="col-lg-3 col-md-4 col-sm-6 col-12 tm-gallery-item">
+				<figure>
+					<img src="products/<%= product.pic %>" alt="Image" class="img-fluid tm-gallery-img" />
+					<figcaption>
+						<h4 class="tm-gallery-title"><%= product.title %></h4>
+						<p class="tm-gallery-description"><%= product.description %></p>
+						<p class="tm-gallery-price">Rp. <%= product.price %></p>
+					</figcaption>
+				</figure>
+			</article>
+		<% }); %>
+	</div>
+	<div id="tm-gallery-page-beverages" class="tm-gallery-page hidden">
+		<article class="col-lg-3 col-md-4 col-sm-6 col-12 tm-gallery-item">
+			<figure>
+				<img src="img/gallery/04.jpg" alt="Image" class="img-fluid tm-gallery-img" />
+				<figcaption>
+					<h4 class="tm-gallery-title">Salad Menu One</h4>
+					<p class="tm-gallery-description">Proin eu velit egestas, viverra sapien eget, consequat nunc. Vestibulum tristique</p>
+					<p class="tm-gallery-price">$25</p>
+				</figcaption>
+			</figure>
+		</article>
+	</div>
+</div>
+<div class="tm-section tm-container-inner">
+	<div class="row">
+		<div class="col-md-6">
+			<figure class="tm-description-figure">
+				<img src="img/img-01.jpg" alt="Image" class="img-fluid" />
+			</figure>
+		</div>
+		<div class="col-md-6">
+			<div class="tm-description-box"> 
+				<h4 class="tm-gallery-title">Maecenas nulla neque</h4>
+				<p class="tm-mb-45">Redistributing this template as a downloadable ZIP file on any template collection site is strictly prohibited. You will need to <a rel="nofollow" href="https://templatemo.com/contact">talk to us</a> for additional permissions about our templates. Thank you.</p>
+				<a href="about.html" class="tm-btn tm-btn-default tm-right">Read More</a>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="tm-section tm-container-inner">
+	<div class="row">
+		<div class="col-md-12">
+			<a href="https://api.whatsapp.com/send?phone=628981234567&text=Halo" class="tm-center"><img src="img/wa_order.png" style="max-width: 200px;"></a>
+		</div>
+	</div>
+</div>
