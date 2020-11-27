@@ -1,0 +1,89 @@
+<div id="order-confirm" class="about-main pad-top-150 pad-bottom-100">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                <div class="wow fadeIn" data-wow-duration="1s" data-wow-delay="0.1s">
+                    <h2 class="block-title">Konfirmasi Pemesanan</h2>
+                    <h4>Berikut adalah detail pemesanan anda :</h4>
+                    <form class="form-horizontal">
+                        <div class="form-group">
+                            <label class="col-sm-4 control-label">Nama Produk</label>
+                            <div class="col-sm-8">
+                                <p class="form-control-static"><%= Product.title %></p>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-4 control-label">Nama Pemesan</label>
+                            <div class="col-sm-8">
+                                <p class="form-control-static"><%= bodyPost.cust_name %></p>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-4 control-label">Email Pemesan</label>
+                            <div class="col-sm-8">
+                                <p class="form-control-static"><%= bodyPost.email %></p>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-4 control-label">Telepon / WA</label>
+                            <div class="col-sm-8">
+                                <p class="form-control-static"><%= bodyPost.phone %></p>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-4 control-label">Tgl Pengiriman</label>
+                            <div class="col-sm-8">
+                                <p class="form-control-static"><%= bodyPost.date_picker %></p>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-4 control-label">Waktu</label>
+                            <div class="col-sm-8">
+                                <p class="form-control-static"><%= bodyPost.time_picker %></p>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-4 control-label">Alamat Pengiriman</label>
+                            <div class="col-sm-8">
+                                <p class="form-control-static"><%= bodyPost.address %></p>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-4 control-label">Total Harga</label>
+                            <div class="col-sm-8">
+                                <p class="form-control-static">Rp. <%= Intl.NumberFormat().format(bodyPost.total_order) %></p>
+                            </div>
+                        </div>
+                    </form>
+                    <div class="row">
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                            <div class="reserve-book-btn">
+                                <button type="button" value="PESAN" id="gotopesan"><i class="fa fa-share-square-o"></i > &nbsp;LANJUTKAN PEMESANAN </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- end col -->
+            <div class="col-lg-6 col-md-6 col-sm-12 hidden-xs">
+                <div class="wow fadeIn" data-wow-duration="1s" data-wow-delay="0.1s">
+                    <div class="about-images">
+                        <img class="about-main" src="/products/<%= Product.pic %>" alt="About Main Image">
+                        <!-- <img class="about-inset" src="/images/about-inset.jpg" alt="About Inset Image"> -->
+                    </div>
+                </div>
+            </div>
+            <!-- end col -->
+        </div>
+        <!-- end row -->
+    </div>
+    <!-- end container -->
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function(){
+        $("#gotopesan").on("click",function(){
+            location.href="https://api.whatsapp.com/send?phone=<%= cProfile.phone %>&text=<%= waOrderTemplate %>";
+        })
+    });
+</script>

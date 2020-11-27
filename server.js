@@ -2,6 +2,7 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
 const expressLayouts = require('express-ejs-layouts');
+const session = require('express-session');
 
 const app = express();
 
@@ -18,18 +19,17 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 const db = require("./models");
-db.mongoose
-  .connect(db.url, {
+db.mongoose.connect(db.url, {
     useNewUrlParser: true,
     useUnifiedTopology: true
-  })
-  .then(() => {
+  }).then(() => {
     console.log("Connected to the database!");
-  })
-  .catch(err => {
+  }).catch(err => {
     console.log("Cannot connect to the database!", err);
     process.exit();
-  });
+});
+
+app.use(session({secret: 'wawanjualan', saveUninitialized: true, resave: true}));
 
 // Static Files
 app.use(express.static('public'))

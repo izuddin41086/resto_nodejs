@@ -2,8 +2,24 @@
 const db = require("../../models");
 const Products = db.products;
 const Profile = db.profile;
+const Gallery = db.gallery;
+
+var sess;
 
 exports.index = async (req, res, next) => {
+    sess = req.session
+    if (sess.profile == "" || sess.profile == undefined){
+        sess.profile = await Profile.find().then(data => {
+            return data[0]
+        }).catch(err => {
+            res.status(500).send({
+                message:
+                err.message || "Some error occurred while retrieving Profile."
+            });
+        });
+    }
+    const cProfile = sess.profile
+
     const title = req.query.title;
     var condition = title ? { title: { $regex: new RegExp(title), $options: "i" } } : {};
 
@@ -16,8 +32,9 @@ exports.index = async (req, res, next) => {
         });
     });
 
-    const cProfile = await Profile.find(condition).then(data => {
-        return data[0];
+    const galleryMap = [8,4,4,4,4,4,8,4,4,4];
+    const cGallery = await Gallery.find(condition).then(data => {
+        return data;
     }).catch(err => {
         res.status(500).send({
             message:
@@ -25,5 +42,5 @@ exports.index = async (req, res, next) => {
         });
     });
 
-    res.render("index",{ ProductList, cProfile });
+    res.render("index",{ ProductList, cProfile, cGallery, galleryMap });
 }

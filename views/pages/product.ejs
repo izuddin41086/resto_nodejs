@@ -1,0 +1,114 @@
+<div id="product" class="about-main pad-top-150 pad-bottom-100">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                <div class="wow fadeIn" data-wow-duration="1s" data-wow-delay="0.1s">
+                    <h2 class="block-title"><%= Product.title %></h2>
+                    <h3>Rp. <%= Intl.NumberFormat().format(Product.price) %></h3>
+                    <p><%= Product.description %></p>
+                    <div class="row">
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                            <div class="reserve-book-btn">
+                                <button type="button" value="PESAN" id="gotopesan"><i class="fa fa-share-square-o"></i > &nbsp;PESAN </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- end col -->
+            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                <div class="wow fadeIn" data-wow-duration="1s" data-wow-delay="0.1s">
+                    <div class="about-images">
+                        <img class="about-main" src="/products/<%= Product.pic %>" alt="About Main Image">
+                        <!-- <img class="about-inset" src="/images/about-inset.jpg" alt="About Inset Image"> -->
+                    </div>
+                </div>
+            </div>
+            <!-- end col -->
+        </div>
+        <!-- end row -->
+    </div>
+    <!-- end container -->
+</div>
+
+<div id="order" class="reservations-main pad-top-100 pad-bottom-100">
+    <div class="container">
+        <div class="row">
+            <div class="form-reservations-box">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <div class="wow fadeIn" data-wow-duration="1s" data-wow-delay="0.1s">
+                        <h2 class="block-title text-center">
+                    Pemesanan
+                </h2>
+                    </div>
+                    <p>SILAHKAN ISI FORM UNTUK PEMESANAN DIBAWAH INI</p>
+
+                    <form id="product-form" method="post" class="reservations-box" name="contactform" action="/orders/confirm/<%= id %>">
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                            <div class="form-box">
+                                <input type="hidden" name="idProduct" value="<%= Product.id %>">
+                                <input type="text" name="cust_name" id="cust_name" placeholder="Nama" required="required" data-error="Firstname is required.">
+                            </div>
+                        </div>
+                        <!-- end col -->
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                            <div class="form-box">
+                                <input type="email" name="email" id="email" placeholder="E-Mail" required="required" data-error="E-mail id is required.">
+                            </div>
+                        </div>
+                        <!-- end col -->
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                            <div class="form-box">
+                                <input type="text" name="phone" id="phone" placeholder="Nomor Kontak WhatsApp">
+                            </div>
+                        </div>
+                        <!-- end col -->
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                            <div class="form-box">
+                                <input type="number" name="jumlah_order" id="jumlah_order" placeholder="Jumlah Pemesanan">
+                            </div>
+                        </div>
+                        <!-- end col -->
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                            <div class="form-box">
+                                <input type="text" name="date_picker" id="date-picker" placeholder="Tanggal Pengiriman" required="required" data-error="Date is required." />
+                            </div>
+                        </div>
+                        <!-- end col -->
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                            <div class="form-box">
+                                <input type="text" name="time_picker" id="time-picker" placeholder="Waktu" required="required" data-error="Time is required." />
+                            </div>
+                        </div>
+
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                            <div class="form-box">
+                                <textarea name="address" id="address" placeholder="Alamat Pengiriman" required="required" data-error="Time is required."></textarea>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                            <div class="reserve-book-btn text-center">
+                                <button class="hvr-underline-from-center" type="submit" value="SEND" id="submit"><i class="fa fa-paper-plane"></i> &nbsp;KIRIM PESANAN </button>
+                            </div>
+                        </div>
+                        <!-- end col -->
+                    </form>
+                    <!-- end form -->
+                </div>
+                <!-- end col -->
+            </div>
+            <!-- end reservations-box -->
+        </div>
+        <!-- end row -->
+    </div>
+    <!-- end container -->
+</div>
+<!-- end reservations-main -->
+<script type="text/javascript">
+    $(document).ready(function(){
+        $("#gotopesan").on("click",function(){
+            location.href="#order";
+        })
+    });
+</script>

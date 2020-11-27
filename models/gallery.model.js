@@ -1,16 +1,11 @@
 module.exports = mongoose => {
     var schema = mongoose.Schema(
         {
-          name: String,
+          title: String,
           description: String,
-          address: String,
-          email: String,
-          phone: String,
-          opening_hours: String,
-          wa: String,
-          fb: String,
-          twitter: String,
-          instagram: String,
+          pic: String,
+          id_product: Number,
+          published: Boolean
         },
         { timestamps: true }
     );
@@ -21,6 +16,6 @@ module.exports = mongoose => {
         return object;
     });
 
-    const Profile = mongoose.model("profile", schema);
-    return Profile;
+    const Gallery = mongoose.model("galleries", schema);
+    return Gallery;
 };
