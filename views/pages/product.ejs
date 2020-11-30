@@ -1,7 +1,7 @@
-<div id="product" class="about-main pad-top-150 pad-bottom-100">
+<div id="product" class="about-main pad-top-150">
     <div class="container">
         <div class="row">
-            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12" style="margin-bottom: 50px;">
                 <div class="wow fadeIn" data-wow-duration="1s" data-wow-delay="0.1s">
                     <div class="about-images">
                         <img class="about-main" src="/products/<%= Product.pic %>" alt="About Main Image">
@@ -9,7 +9,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12" style="margin-bottom: 50px;">
                 <div class="wow fadeIn" data-wow-duration="1s" data-wow-delay="0.1s">
                     <h2 class="block-title"><%= Product.title %></h2>
                     <h3>Rp. <%= Intl.NumberFormat().format(Product.price) %></h3>

@@ -419,6 +419,12 @@ html, body{ height: 100%; }
     vertical-align: middle;
     color: #fff;
 }
+@media only screen and (max-width: 600px) {
+    .banner-cell {
+      vertical-align: top;
+      padding-top: 30vh;
+    }
+}
 .banner-text h1 {
 	font-family: 'nautilus_pompiliusregular';
     letter-spacing: 2.7px;
@@ -428,7 +434,7 @@ html, body{ height: 100%; }
     line-height: 100px;
 	color:#fff;
 	padding-bottom: 0px;
-	padding-top:100px;
+	/* padding-top:100px; */
 }
 
 .banner-text h2 {
