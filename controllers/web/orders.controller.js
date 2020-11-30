@@ -38,7 +38,7 @@ exports.confirmOrder = async (req, res, next) => {
     waOrder += "Tgl Pengiriman: " + bodyPost.date_picker + "\r\n";
     waOrder += "Waktu: " + bodyPost.time_picker + "\r\n";
     waOrder += "Alamat Pengiriman: " + bodyPost.address + "\r\n";
-    waOrder += "Total Harga: " + Intl.NumberFormat().format(bodyPost.total_order)};
+    waOrder += "Total Harga: " + Intl.NumberFormat().format(bodyPost.total_order);
 
     var waOrderTemplate = encodeURIComponent(waOrder);
 
