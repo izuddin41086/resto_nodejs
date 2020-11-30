@@ -29,15 +29,16 @@ exports.confirmOrder = async (req, res, next) => {
     var bodyPost = req.body
     bodyPost.total_order = bodyPost.jumlah_order * Product.price
 
-    var waOrder = `Assalamualaykum ${cProfile.name}, mau order nih
-    Nama Produk: ${Product.title}
-    Nama Pemesan: ${bodyPost.cust_name}
-    Email Pemesan: ${bodyPost.email}
-    Telepon: ${bodyPost.phone}
-    Tgl Pengiriman: ${bodyPost.date_picker}
-    Waktu: ${bodyPost.time_picker}
-    Alamat Pengiriman: ${bodyPost.address}
-    Total Harga: ${Intl.NumberFormat().format(bodyPost.total_order)}`;
+    var waOrder = "Assalamu'alaykum " + cProfile.name + "\r\n";
+    waOrder += "Saya pesan dengan detail sbb:\r\n";
+    waOrder += "Nama Produk: " + Product.title + "\r\n";
+    waOrder += "Nama Pemesan: " + bodyPost.cust_name + "\r\n";
+    waOrder += "Email Pemesan: " + bodyPost.email + "\r\n";
+    waOrder += "Telepon: " + bodyPost.phone + "\r\n";
+    waOrder += "Tgl Pengiriman: " + bodyPost.date_picker + "\r\n";
+    waOrder += "Waktu: " + bodyPost.time_picker + "\r\n";
+    waOrder += "Alamat Pengiriman: " + bodyPost.address + "\r\n";
+    waOrder += "Total Harga: " + Intl.NumberFormat().format(bodyPost.total_order)};
 
     var waOrderTemplate = encodeURIComponent(waOrder);
 
