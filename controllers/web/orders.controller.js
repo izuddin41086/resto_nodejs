@@ -29,17 +29,17 @@ exports.confirmOrder = async (req, res, next) => {
     var bodyPost = req.body
     bodyPost.total_order = bodyPost.jumlah_order * Product.price
 
-    var waOrder = `Assalamualaykum ${cProfile.name}, mau order nih %0D%0A
-    Nama Produk: ${Product.title} %0D%0A
-    Nama Pemesan: ${bodyPost.cust_name} %0D%0A
-    Email Pemesan: ${bodyPost.email} %0D%0A
-    Telepon: ${bodyPost.phone} %0D%0A
-    Tgl Pengiriman: ${bodyPost.date_picker} %0D%0A
-    Waktu: ${bodyPost.time_picker} %0D%0A
-    Alamat Pengiriman: ${bodyPost.address} %0D%0A
+    var waOrder = `Assalamualaykum ${cProfile.name}, mau order nih \r\n
+    Nama Produk: ${Product.title} \r\n
+    Nama Pemesan: ${bodyPost.cust_name} \r\n
+    Email Pemesan: ${bodyPost.email} \r\n
+    Telepon: ${bodyPost.phone} \r\n
+    Tgl Pengiriman: ${bodyPost.date_picker} \r\n
+    Waktu: ${bodyPost.time_picker} \r\n
+    Alamat Pengiriman: ${bodyPost.address} \r\n
     Total Harga: ${Intl.NumberFormat().format(bodyPost.total_order)}`;
 
-    var waOrderTemplate = encodeURIComponent(waOrder)
+    var waOrderTemplate = encodeURIComponent(waOrder);
 
     res.render("pages/confirm_order",{ Product, cProfile , bodyPost, waOrderTemplate, onePage: true});
 }
