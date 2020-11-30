@@ -29,7 +29,7 @@ exports.confirmOrder = async (req, res, next) => {
     var bodyPost = req.body
     bodyPost.total_order = bodyPost.jumlah_order * Product.price
 
-    var waOrder = "Assalamu'alaykum " + cProfile.name + "\r\n";
+    var waOrder = "Assalamualaykum " + cProfile.name + "\r\n";
     waOrder += "Saya pesan dengan detail sbb:\r\n";
     waOrder += "Nama Produk: " + Product.title + "\r\n";
     waOrder += "Nama Pemesan: " + bodyPost.cust_name + "\r\n";
