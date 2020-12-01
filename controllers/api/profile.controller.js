@@ -11,6 +11,8 @@ exports.create = (req, res) => {
     // Create a Tutorial
     const cprofile = new Profile({
         name: req.body.name,
+        moto: req.body.moto,
+        submoto: req.body.submoto,
         address: req.body.address,
         email: req.body.email,
         phone: req.body.phone,
@@ -88,6 +90,7 @@ exports.update = (req, res) => {
     }
 
     const id = req.params.id;
+    //console.log(req.body.opening_hours)
 
     Profile.findByIdAndUpdate(id, req.body, { useFindAndModify: false })
     .then(data => {
@@ -99,7 +102,7 @@ exports.update = (req, res) => {
     })
     .catch(err => {
         res.status(500).send({
-            message: "Error updating profile with id=" + id
+            message: "Error updating profile with id=" + err
         });
     });
 };
