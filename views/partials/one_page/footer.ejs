@@ -67,7 +67,7 @@
                             <h3>Jam Operasional</h3>
 
                             <ul>
-                                <% if (cProfile.opening_hours){ %>
+                                <% if (cProfile.opening_hours.length > 0){ %>
                                     <% cProfile.opening_hours.forEach(function(op_hours){ %>
                                         <li>
                                             <p><%= op_hours.days %></p>
