@@ -55,6 +55,7 @@
                                             <img src="products/<%= product.pic %>" alt="" class="img-responsive">
                                             <div>
                                                 <h3><%= product.title %></h3>
+                                                <span class="visible-xs visible-sm" style="margin-top:-9px; color: #e75b1e; font-weight: bold;">Rp <%= new Intl.NumberFormat().format(product.price) %></span>
                                                 <p><%= product.description.substring(1,100) %></p>
                                             </div>
                                             <span class="offer-price">Rp <%= new Intl.NumberFormat().format(product.price) %></span>

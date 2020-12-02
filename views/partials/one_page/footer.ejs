@@ -7,9 +7,9 @@
                         <div class="footer-box-b">
                             <h3>Site Map</h3>
                             <ul>
-                                <li><a href="#">Beranda</a></li>
-                                <li><a href="#menu">Daftar Menu</a></li>
-                                <li><a href="#gallery">Galeri Produk</a></li>
+                                <li><a href="/">Beranda</a></li>
+                                <li><a href="/#menu">Daftar Menu</a></li>
+                                <li><a href="/#gallery">Galeri Produk</a></li>
                                 <li><a href="#footer">Kontak Kami</a></li>
                             </ul>
                         </div>
@@ -67,12 +67,14 @@
                             <h3>Jam Operasional</h3>
 
                             <ul>
-                                <% cProfile.opening_hours.forEach(function(op_hours){ %>
-                                    <li>
-                                        <p><%= op_hours.days %></p>
-                                        <span><%= op_hours.time %></span>
-                                    </li>
-                                <% }) %>
+                                <% if (cProfile.opening_hours){ %>
+                                    <% cProfile.opening_hours.forEach(function(op_hours){ %>
+                                        <li>
+                                            <p><%= op_hours.days %></p>
+                                            <span><%= op_hours.time %></span>
+                                        </li>
+                                    <% }) %>
+                                <% } %>
                             </ul>
                         </div>
                         <!-- end footer-box-d -->
