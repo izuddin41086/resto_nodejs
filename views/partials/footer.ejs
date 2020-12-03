@@ -67,14 +67,13 @@
                             <h3>Jam Operasional</h3>
 
                             <ul>
-                                <% if (cProfile.opening_hours.length > 0){ %>
-                                    <% cProfile.opening_hours.forEach(function(op_hours){ %>
-                                        <li>
-                                            <p><%= op_hours.days %></p>
-                                            <span><%= op_hours.time %></span>
-                                        </li>
-                                    <% }) %>
-                                <% } %>
+								<% var opHours = JSON.parse(JSON.stringify(cProfile.opening_hours)) %>
+								<% opHours.forEach(function(op_hours){ %>
+									<li>
+										<p><%= op_hours.days %></p>
+										<span><%= op_hours.time %></span>
+									</li>
+								<% }) %>
                             </ul>
                         </div>
                         <!-- end footer-box-d -->

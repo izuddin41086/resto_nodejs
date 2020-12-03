@@ -18,11 +18,9 @@ exports.index = async (req, res, next) => {
             });
         });
     }
-    const cProfile = sess.profile
-
+    var cProfile = sess.profile
     const title = req.query.title;
     var condition = title ? { title: { $regex: new RegExp(title), $options: "i" } } : {};
-
     const ProductList = await Products.find(condition).then(data => {
         return data;
     }).catch(err => {
