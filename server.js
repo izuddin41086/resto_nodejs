@@ -32,7 +32,8 @@ db.mongoose.connect(db.url, {
 app.use(session({secret: 'wawanjualan', saveUninitialized: true, resave: true}));
 
 // Static Files
-app.use(express.static('public'))
+app.use("/site_assets", express.static('assets/public'))
+app.use("/site_admin", express.static('assets/admin'))
 
 // EJS Layouts
 app.use(expressLayouts)
