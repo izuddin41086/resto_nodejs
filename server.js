@@ -3,7 +3,7 @@ const bodyParser = require("body-parser");
 const cors = require("cors");
 const expressLayouts = require('express-ejs-layouts');
 const session = require('express-session');
-
+const engine = require('ejs-locals')
 const app = express();
 
 var corsOptions = {
@@ -12,11 +12,10 @@ var corsOptions = {
 
 app.use(cors(corsOptions));
 
-// parse requests of content-type - application/json
-app.use(bodyParser.json());
-
 // parse requests of content-type - application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: true }));
+// parse requests of content-type - application/json
+app.use(bodyParser.json());
 
 const db = require("./models");
 db.mongoose.connect(db.url, {
@@ -36,7 +35,8 @@ app.use("/site_assets", express.static('assets/public'))
 app.use("/site_admin", express.static('assets/admin'))
 
 // EJS Layouts
-app.use(expressLayouts)
+app.engine('ejs',engine)
+//app.use(expressLayouts)
 app.set('layout', './layout')
 app.set('view engine', 'ejs')
 

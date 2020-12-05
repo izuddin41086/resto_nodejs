@@ -40,5 +40,5 @@ exports.index = async (req, res, next) => {
         });
     });
 
-    res.render("index",{ ProductList, cProfile, cGallery, galleryMap });
+    res.render("index", { ProductList, cProfile, cGallery, galleryMap });
 }

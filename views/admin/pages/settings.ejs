@@ -1,0 +1,64 @@
+<% layout('../layout') -%>
+
+<div class="card card-secondary">
+    <!-- /.card-header -->
+    <!-- form start -->
+    <form role="form" method="POST">
+        <div class="card-body">
+            <div class="form-group">
+                <label for="name">Company Name</label>
+                <input type="hidden" class="form-control" id="id" name="id" value="<%= data.id %>">
+                <input type="text" class="form-control" id="name" name="name" placeholder="Company name" value="<%= data.name %>">
+            </div>
+            <div class="form-group">
+                <label for="moto">Motto 1</label>
+                <input type="text" class="form-control" id="moto" name="moto" placeholder="Motto" value="<%= data.moto %>">
+            </div>
+            <div class="form-group">
+                <label for="submoto">Motto 2</label>
+                <input type="text" class="form-control" id="submoto" name="submoto" placeholder="Motto 2" value="<%= data.submoto %>"> 
+            </div>
+            <div class="form-group">
+                <label for="exampleInputPassword1">Description</label>
+                <textarea class="form-control" id="description" name="description" placeholder="Description"><%= data.description %></textarea>
+            </div>
+            <div class="form-group">
+                <label for="exampleInputPassword1">Address</label>
+                <textarea class="form-control" id="address" name="address" placeholder="Address"><%= data.address %></textarea>
+            </div>
+            <div class="form-group">
+                <label for="exampleInputPassword1">E-mail</label>
+                <input type="text" class="form-control" id="email" name="email" placeholder="E-mail" value="<%= data.email %>">
+            </div>
+            <div class="form-group">
+                <label for="exampleInputPassword1">Phone</label>
+                <input type="text" class="form-control" id="phone" name="phone" placeholder="Phone" value="<%= data.phone %>">
+            </div>
+            <div class="form-group">
+                <label for="wa">WhatsApp</label>
+                <input type="text" class="form-control" id="wa" name="wa" placeholder="wa" value="<%= data.wa %>">
+            </div>
+            <div class="form-group">
+                <label for="fb">Facebook</label>
+                <input type="text" class="form-control" id="fb" name="fb" placeholder="fb" value="<%= data.fb %>">
+            </div>
+            <div class="form-group">
+                <label for="exampleInputPassword1">Twitter</label>
+                <input type="text" class="form-control" id="twitter" name="twitter" placeholder="twitter" value="<%= data.twitter %>">
+            </div>
+            <div class="form-group">
+                <label for="exampleInputPassword1">Instagram</label>
+                <input type="text" class="form-control" id="instagram" name="instagram" placeholder="instagram" value="<%= data.instagram %>">
+            </div>
+            <div class="form-group">
+                <label for="exampleInputPassword1">Opening Hours</label>
+                <input type="text" class="form-control" id="opening_hours" name="opening_hours" placeholder="Password" value="<%= data.opening_hours %>">
+            </div>
+        </div>
+        <!-- /.card-body -->
+
+        <div class="card-footer">
+        <button type="submit" class="btn btn-primary">Submit</button>
+        </div>
+    </form>
+</div>

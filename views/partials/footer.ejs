@@ -67,7 +67,7 @@
                             <h3>Jam Operasional</h3>
 
                             <ul>
-								<% var opHours = JSON.parse(JSON.stringify(cProfile.opening_hours)) %>
+								<% var opHours = JSON.parse(cProfile.opening_hours) %>
 								<% opHours.forEach(function(op_hours){ %>
 									<li>
 										<p><%= op_hours.days %></p>

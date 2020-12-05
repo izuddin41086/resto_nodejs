@@ -44,14 +44,14 @@
         <div id="status"></div>
     </div>
 
-    <% if (locals.onePage) { %>
-        <%- include ("partials/one_page/header") %>
+    <% if (typeof onePage !== "undefined") { %>
+        <%- include partials/one_page/header %>
         <%- body %>
-        <%- include("partials/one_page/footer") %>
+        <%- include partials/one_page/footer %>
     <% }else{ %>
-        <%- include ("partials/header") %>
+        <%- include partials/header %>
         <%- body %>
-        <%- include("partials/footer") %>
+        <%- include partials/footer %>
     <% } %>
     
     <!-- ALL JS FILES -->

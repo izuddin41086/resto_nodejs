@@ -32,7 +32,7 @@ exports.create = (req, res) => {
 };
 
 exports.findAll = (req, res) => {
-    res.render("admin/pages/products", { layout: 'admin/layout' })
+    res.render("admin/pages/products")
 };
 
 exports.findAllPublished = (req, res) => {
