@@ -4,7 +4,14 @@ const cors = require("cors");
 const expressLayouts = require('express-ejs-layouts');
 const session = require('express-session');
 const engine = require('ejs-locals')
+const fileUpload = require('express-fileupload');
+
 const app = express();
+// enable files upload
+app.use(fileUpload({
+  createParentPath: true
+}));
+
 
 var corsOptions = {
   origin: "http://localhost:8081"

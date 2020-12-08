@@ -1,0 +1,134 @@
+<% stylesheet('/site_admin/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css') -%>
+<% stylesheet('/site_admin/plugins/datatables-responsive/css/responsive.bootstrap4.min.css') -%>
+<% layout('../../layout') -%>
+<div class="row">
+    <div class="col-12">
+        <div class="card card-secondary">
+            <div class="card-header">
+                <h3 class="card-title">List Data</h3>
+                <a class="btn btn-success btn-sm float-right" href="/admin/products/add">+</a>
+            </div>
+            <!-- /.card-header -->
+            <div class="card-body">
+                <table id="tablex" class="table table-bordered table-striped" style="width:100%">
+                    <thead>
+                        <tr>
+                            <th>No</th>
+                            <th>Name</th>
+                            <th>Description</th>
+                            <th>Price</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+            <!-- /.card-body -->
+        </div>
+    </div>
+</div>
+
+<% block('scripts', `
+    <script src="/site_admin/plugins/datatables/jquery.dataTables.min.js"></script>
+    <script src="/site_admin/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+    <script src="/site_admin/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+    <script src="/site_admin/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            btnAct = (product) => {
+                var ret = '<a class="btn btn-primary btn-sm" href="/admin/products/' + product.id +'"><i class="fas fa-folder"></i> View</a>&nbsp;';
+                ret += '<a class="btn btn-info btn-sm" href="/admin/products/update/' + product.id +'"><i class="fas fa-pencil-alt"></i> Edit</a>&nbsp;';
+                ret += '<a class="btn btn-danger btn-sm delete_this" href="/admin/products/delete/'+ product.id +'"><i class="fas fa-trash"></i> Delete</a>';
+                return ret;
+            }
+
+            datatableColumn = ()=>{
+                return [
+                    {
+                        "data": "id",
+                        "title": '<div class="checkbox checkAll"><label><input type="checkbox" id="table-select-all" class="listCheck"><span class="cr"><i class="cr-icon glyphicon glyphicon-ok"></i></span></label>',
+                        "sClass": "table-cekbox",
+                        "width": '5%',
+                        "visible":false,
+                        'searchable':false,
+                        'orderable':false,
+                        'className': 'table-cekbox',
+                        'render': function (data, type, full, meta) {
+                            return '<div class="checkbox"><label><input type="checkbox" name="" value="' + $('<div/>').text(data).html() + '" class="listCheck"></input><span class="cr"><i class="cr-icon glyphicon glyphicon-ok"></i></span></label></div>';
+                        }
+                    }, {
+                        "data": "title",
+                        "title": "Product Name",
+                        //"width": '25%'
+                    }, {
+                        "data": "description",
+                        "title": "Description",
+                        //"width": '25%'
+                    },
+                    {
+                        "data": "price.$numberDecimal",
+                        "title": "Price",
+                        "width": '15%',
+                        'render': function (data, type, full, meta) {
+                            return "Rp. " + new Intl.NumberFormat().format(data.toString())
+                        }
+                    },
+                    {
+                        "data": null,
+                        "title": "Action",
+                        "defaultContent": btnAct,
+                        "width": '25%',
+                        'searchable':false,
+                        'orderable':false,
+                        "className": "dt-center",
+                        'render': function (dataRow, type, full, meta) {
+                            return btnAct(full)
+                        }
+                    }
+                ]
+            }
+
+            var table = $('#tablex').DataTable({
+                dom: '<"top" <"row"<"col-md-6"l><"col-md-6"f>>>rt<"bottom" <"row"<"col-md-6"i><"col-md-6"p>> ><"clear">',
+                'paging': true, // Table pagination
+                'ordering': true, // Column ordering
+                'info': true, // Bottom left status text
+                'responsive': true, // https://datatables.net/extensions/responsive/examples/
+                'processing': true,
+                'serverSide': true,
+                "pageLength": 10,
+                'ajax': {
+                    url: "/admin/products/dataTable",
+                    type: "POST",
+                    data: function (d) {
+                    }
+                },
+                "columns": datatableColumn(),
+                "select": {
+                    "style": "os"
+                },
+                // "createdRow": function ( row, data, index ) {
+                //     $(row).find("td:last, td:first").addClass('row-no-pointer')
+                //     $(row).find("td:not(:last, :first)").addClass('btn-act')
+                //     $(row).find("td:not(:last, :first)").attr('act-type','edit-row')
+                // },
+                "order": [[0, "desc"]]
+            });
+
+            $(document).on("click", ".delete_this", function(e){
+                e.preventDefault();
+                var confirmD = confirm("Data akan dihapus ?")
+                if (confirmD){
+                    $.ajax({
+                        url: $(this).attr("href"),
+                        method: "Delete",
+                        success: function(){
+                            table.draw();
+                        }
+                    })
+                    return false;
+                }
+                return true;
+            });
+        });
+    </script>
+`) -%>

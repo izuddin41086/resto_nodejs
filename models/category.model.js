@@ -1,11 +1,8 @@
 module.exports = mongoose => {
     var schema = mongoose.Schema(
         {
-          categoryId: String,
           title: String,
           description: String,
-          price: mongoose.Decimal128,
-          pic: String,
           published: Boolean
         },
         { timestamps: true }
@@ -17,6 +14,6 @@ module.exports = mongoose => {
         return object;
     });
 
-    const Product = mongoose.model("products", schema);
-    return Product;
+    const Category = mongoose.model("categories", schema);
+    return Category;
 };

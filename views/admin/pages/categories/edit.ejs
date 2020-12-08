@@ -1,0 +1,18 @@
+<% layout('../../layout') -%>
+
+<%- include form %>
+
+<script type="text/javascript">
+    var Category = <%-JSON.stringify(Category)%>
+</script>
+
+<% block('scripts', `
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $(".card-title").html("Edit Data")
+            $("#id").val(Category.id);
+            $("#name").val(Category.title);
+            $("#description").val(Category.description);
+        });
+    </script>
+`) -%>

@@ -1,0 +1,21 @@
+<% layout('../../layout') -%>
+
+<%- include form %>
+
+<script type="text/javascript">
+    var Product = <%-JSON.stringify(Product)%>
+</script>
+
+<% block('scripts', `
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $(".card-title").html("Edit Data")
+            $("#id").val(Product.id);
+            $("#title").val(Product.title);
+            $("#description").val(Product.description);
+            $("#price").val(Product.price.$numberDecimal);
+            $("#preview").attr("src","/site_assets/products/" + Product.pic);
+            $("#opt_category").val(Product.categoryId);
+        });
+    </script>
+`) -%>
