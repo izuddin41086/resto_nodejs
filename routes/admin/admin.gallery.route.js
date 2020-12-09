@@ -1,12 +1,10 @@
 const router = require("express").Router();
 const gallery = require("../../controllers/admin/admin.gallery.controller");
 
-router.post("/", gallery.create);
-router.get("/", gallery.findAll);
-router.get("/published", gallery.findAllPublished);
-router.get("/:id", gallery.findOne);
+router.post("/:id", gallery.create);
+router.post("/data/dataTable", gallery.data_table);
 router.put("/:id", gallery.update);
+router.put("/set_profile/:id", gallery.set_profile);
 router.delete("/:id", gallery.delete);
-router.delete("/", gallery.deleteAll);
 
 module.exports = router

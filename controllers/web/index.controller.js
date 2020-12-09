@@ -22,7 +22,11 @@ exports.index = async (req, res, next) => {
     const title = req.query.title;
     var condition = title ? { title: { $regex: new RegExp(title), $options: "i" } } : {};
     const ProductList = await Products.find(condition).then(data => {
-        return data;
+        data.forEach(async(prod) => {
+            let gal = await Gallery.find({ id_product: prod.id, is_profile: 1 })
+            prod.pic = gal[0].pic
+        })
+        return data
     }).catch(err => {
         res.status(500).send({
             message:

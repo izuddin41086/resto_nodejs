@@ -1,3 +1,5 @@
+<% stylesheet('/site_admin/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css') -%>
+<% stylesheet('/site_admin/plugins/datatables-responsive/css/responsive.bootstrap4.min.css') -%>
 <% layout('../../layout') -%>
 
 <div class="card card-secondary">
@@ -24,16 +26,210 @@
                     <input type="text" readonly class="form-control-plaintext" id="staticEmail" value="Rp. <%= Intl.NumberFormat().format(data.price) %>">
                 </div>
             </div>
-            <div class="form-group row">
-                <label for="img" class="col-sm-2 col-form-label">Image</label>
-                <div class="col-sm-5">
-                    <img src="/site_assets/products/<%= data.pic %>" id="preview" class="img-thumbnail">
-                </div>
-            </div>
         </div>
         <div class="card-footer">
             <a href="/admin/products" class="btn btn-danger">Back</a>
         </div>
     </form>
-
 </div>
+<div class="card card-secondary">
+    <div class="card-header">
+        <h3 class="card-title">Images</h3>
+    </div>
+
+    <div class="card-body">
+        <form action = "/admin/gallery/<%= data.id %>" class="form-horizontal" method="POST" enctype="multipart/form-data">
+            <div class="form-group row">
+                <label for="staticEmail" class="col-sm-2 col-form-label"><strong>Upload Files</strong></label>
+                <div class="col-sm-3 custom-file mb-1">
+                    <input type="file" name="theFiles" multiple class="custom-file-input form-control" id="customFile">
+                    <label class="custom-file-label" for="customFile">Choose file</label>
+                </div>
+                <div class="col-sm-3">
+                    <button type="submit" name="upload" value="upload" id="upload" class="btn btn-block btn-dark"><i class="fa fa-fw fa-upload"></i> Upload</button>
+                </div>
+            </div>
+        </form>
+        <table id="tablex" class="table table-bordered table-striped" style="width:100%">
+            <thead>
+                <tr>
+                    <th>No</th>
+                    <th>Title</th>
+                    <th>Image</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+        </table>
+    </div>
+</div>
+
+<% block('modal_body', `
+    <form id="form_edit_gallery" action="/admin/gallery/">
+        <div class="form-group">
+            <input type="hidden" class="form-control" id="id_gallery" name="id_gallery">
+            <label for="recipient-name" class="col-form-label">Title:</label>
+            <input type="text" class="form-control" id="image_name" name="image_name">
+        </div>
+    </form>
+`) -%>
+
+<script type="text/javascript">
+    var idProduct = "<%=data.id%>";
+</script>
+
+<% block('scripts', `
+    <script src="/site_admin/plugins/datatables/jquery.dataTables.min.js"></script>
+    <script src="/site_admin/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+    <script src="/site_admin/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+    <script src="/site_admin/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $('input[type="file"]').on("change", function() {
+                let filenames = [];
+                let files = document.getElementById("customFile").files;
+                if (files.length > 1) {
+                    filenames.push("Total Files (" + files.length + ")");
+                } else {
+                    for (let i in files) {
+                        if (files.hasOwnProperty(i)) {
+                            filenames.push(files[i].name);
+                        }
+                    }
+                }
+                $(this).next(".custom-file-label").html(filenames.join(","));
+            });
+
+            btnAct = (gallery) => {
+                var ret = '<a style="color:white;" class="btn btn-info btn-sm" data-toggle="modal" data-target="#exampleModal" data-id="' + gallery.id + '"  data-title="' + gallery.title + '" data-imgsrc="' + gallery.pic + '"><i class="fas fa-pencil-alt"></i> Edit</a>&nbsp;';
+                ret += '<a class="btn btn-danger btn-sm delete_this" href="/admin/gallery/'+ gallery.id +'"><i class="fas fa-trash"></i> Delete</a>&nbsp;';
+                ret += gallery.is_profile ? '<button disabled type="button" class="btn btn-success btn-sm" ><i class="fas fa-check"></i> Profile </button>':'<a class="btn btn-success btn-sm set_profile" data-id_product = "' + gallery.id_product + '" href="/admin/gallery/set_profile/'+ gallery.id +'"><i class="fas fa-check"></i> Profile</a>';
+                return ret;
+            }
+
+            datatableColumn = ()=>{
+                return [
+                    {
+                        "data": "id",
+                        "title": '<div class="checkbox checkAll"><label><input type="checkbox" id="table-select-all" class="listCheck"><span class="cr"><i class="cr-icon glyphicon glyphicon-ok"></i></span></label>',
+                        "sClass": "table-cekbox",
+                        "width": '5%',
+                        "visible":false,
+                        'searchable':false,
+                        'orderable':false,
+                        'className': 'table-cekbox',
+                        'render': function (data, type, full, meta) {
+                            return '<div class="checkbox"><label><input type="checkbox" name="" value="' + $('<div/>').text(data).html() + '" class="listCheck"></input><span class="cr"><i class="cr-icon glyphicon glyphicon-ok"></i></span></label></div>';
+                        }
+                    }, {
+                        "data": "title",
+                        "title": "Title",
+                        //"width": '25%'
+                    },{
+                        "data": "pic",
+                        "title": "Thumbnail",
+                        'render': function (dataRow, type, full, meta) {
+                            return "<img src='" + dataRow + "' style='width:100px;'>";
+                        }
+                    },
+                    {
+                        "data": null,
+                        "title": "Action",
+                        "defaultContent": btnAct,
+                        "width": '25%',
+                        'searchable':false,
+                        'orderable':false,
+                        "className": "dt-center",
+                        'render': function (dataRow, type, full, meta) {
+                            return btnAct(full)
+                        }
+                    }
+                ]
+            }
+
+            var table = $('#tablex').DataTable({
+                dom: '<"top" <"row"<"col-md-6"l><"col-md-6"f>>>rt<"bottom" <"row"<"col-md-6"i><"col-md-6"p>> ><"clear">',
+                'paging': true, // Table pagination
+                'ordering': true, // Column ordering
+                'info': true, // Bottom left status text
+                'responsive': true, // https://datatables.net/extensions/responsive/examples/
+                'processing': true,
+                'serverSide': true,
+                "pageLength": 10,
+                'ajax': {
+                    url: "/admin/gallery/data/dataTable",
+                    type: "POST",
+                    data: function (d) {
+                        d.id_product = idProduct
+                    }
+                },
+                "columns": datatableColumn(),
+                "select": {
+                    "style": "os"
+                },
+                // "createdRow": function ( row, data, index ) {
+                //     $(row).find("td:last, td:first").addClass('row-no-pointer')
+                //     $(row).find("td:not(:last, :first)").addClass('btn-act')
+                //     $(row).find("td:not(:last, :first)").attr('act-type','edit-row')
+                // },
+                "order": [[0, "desc"]]
+            });
+
+            $(document).on("click", ".delete_this", function(e){
+                e.preventDefault();
+                var confirmD = confirm("Data akan dihapus ?")
+                if (confirmD){
+                    $.ajax({
+                        url: $(this).attr("href"),
+                        method: "Delete",
+                        success: function(){
+                            table.draw();
+                        }
+                    })
+                    return false;
+                }
+                return true;
+            });
+
+            $(document).on("click", ".set_profile", function(e){
+                e.preventDefault();
+
+                $.ajax({
+                    url: $(this).attr("href"),
+                    method: "PUT",
+                    data: { "is_profile" : 1, "id_product": $(this).data("id_product") },
+                    success: function(){
+                        table.draw();
+                    }
+                })
+                return false;
+
+            });
+
+            $('#exampleModal').on('show.bs.modal', function (event) {
+                var button = $(event.relatedTarget) // Button that triggered the modal
+                var id = button.data('id') // Extract info from data-* attributes
+                var title = button.data('title') // Extract info from data-* attributes
+                var modal = $(this)
+                modal.find('.modal-title').text('Edit Image')
+                modal.find('.modal-body input#image_name').val(title)
+                modal.find('.modal-body input#id_gallery').val(id)
+            })
+
+            $("#btn_submit_modal").on("click",function(){$("#form_edit_gallery").submit()})
+            $(document).on("submit","#form_edit_gallery",function(e){
+                e.preventDefault();
+                $.ajax({
+                    url: $(this).attr("action") + $("#id_gallery").val(),
+                    method: "PUT",
+                    data: {
+                        "title" : $("#image_name").val()
+                    },
+                    success: function(){
+                        $('#exampleModal').modal("hide")
+                        table.draw();
+                    }
+                })
+            })
+        });
+    </script>
+`) -%>

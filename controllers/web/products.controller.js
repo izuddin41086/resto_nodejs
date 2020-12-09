@@ -1,6 +1,7 @@
 'use strict'
 const db = require("../../models");
 const Products = db.products;
+const Gallery = db.gallery;
 const Profile = db.profile;
 
 var sess;
@@ -20,7 +21,9 @@ exports.detail = async (req, res, next) => {
     }
     const cProfile = sess.profile
 
-    const Product = await Products.findById(id).then(data => {
+    const Product = await Products.findById(id).then(async(data) => {
+        let gal = await Gallery.find({ id_product: id, is_profile: 1 })
+        data.pic = gal[0].pic
         return data
     })
     .catch(err => {

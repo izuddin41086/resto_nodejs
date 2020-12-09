@@ -1,79 +1,65 @@
 const db = require("../../models");
 const Gallery = db.gallery;
+const rand = require("../../library/randomString")
+const fs = require('fs')
 
-exports.create = (req, res) => {
-    // Validate request
-    if (!req.body.title) {
-        res.status(400).send({ message: "Content can not be empty!" });
-        return;
-    }
+exports.create = async (req, res, next) => {
+    let id_product = req.params.id
+    if(req.files) {
+        if (Array.isArray(req.files.theFiles) == false){
+            req.files.theFiles = [req.files.theFiles]
+        }
+        req.files.theFiles.forEach(async(img) => {
+            let randName = rand(20)
+            let extName = img.name.split('.').pop();
+            randName += "." + extName;
+            img.mv('./assets/public/images/gallery/' + randName);
+            const gallery = new Gallery({
+                title: "Ini adalah judul",
+                description: "Ini adalah deskripsinya",
+                pic: randName,
+                id_product: id_product,
+                is_profile: 0,
+                published: req.body.published ? req.body.published : false
+            });
 
-    // Create a Tutorial
-    const gallery = new Gallery({
-        title: req.body.title,
-        description: req.body.description,
-        pic: req.body.pic,
-        id_product: req.body.id_product,
-        published: req.body.published ? req.body.published : false
-    });
+            await gallery.save(gallery).then(data => {
 
-    // Save Tutorial in the database
-    gallery
-      .save(gallery)
-      .then(data => {
-        res.send(data);
-      })
-      .catch(err => {
-        res.status(500).send({
-          message:
-            err.message || "Some error occurred while creating the Product."
+            }).catch(err => {
+
+            });
         });
-      });
+    }
+    res.redirect("/admin/products/"+id_product)
 };
 
-exports.findAll = (req, res) => {
-    const title = req.query.title;
-    var condition = title ? { title: { $regex: new RegExp(title), $options: "i" } } : {};
+exports.data_table = async(req, res) => {
+    const txtsrc = req.body.search.value;
+    const limit = parseInt(req.body.length)
+    const page =  parseInt(req.body.start);
+    let criteria = { title: { $regex: new RegExp(txtsrc), $options: "i" } }
+    if (req.body.id_product){
+        criteria = {  id_product: req.body.id_product }
+    }
 
-    Gallery.find(condition).then(data => {
-        res.send(data);
+    await Gallery.find(criteria).skip(page).limit(limit).then(async data => {
+        data = data.map(function(dt_){
+            dt_.pic = '/site_assets/images/gallery/' + dt_.pic
+            return dt_
+        })
+        let dataCount = await Gallery.find(criteria)
+        return res.json({
+            "recordsTotal": dataCount.length,
+            "recordsFiltered": dataCount.length,
+            "data": data
+        })
     }).catch(err => {
         res.status(500).send({
             message:
-            err.message || "Some error occurred while retrieving Gallery."
+            err.message || "Some error occurred while retrieving profile."
         });
     });
-};
-
-exports.findAllPublished = (req, res) => {
-    Gallery.find({ published: true })
-    .then(data => {
-        res.send(data);
-    })
-    .catch(err => {
-        res.status(500).send({
-        message:
-            err.message || "Some error occurred while retrieving Gallery."
-        });
-    });
-};
-
-exports.findOne = (req, res) => {
-    const id = req.params.id;
-
-    Gallery.findById(id)
-    .then(data => {
-    if (!data)
-        res.status(404).send({ message: "Not found Gallery with id " + id });
-    else
-        res.send(data);
-    })
-    .catch(err => {
-    res
-        .status(500)
-        .send({ message: "Error retrieving Gallery with id=" + id });
-    });
-};
+}
 
 exports.update = (req, res) => {
     if (!req.body) {
@@ -88,13 +74,13 @@ exports.update = (req, res) => {
     .then(data => {
     if (!data) {
         res.status(404).send({
-        message: `Cannot update Product with id=${id}. Maybe Tutorial was not found!`
+            message: `Cannot update Product Image with id=${id}. Maybe Tutorial was not found!`
         });
-    } else res.send({ message: "Product was updated successfully." });
+    } else res.send({ message: "Product Image was updated successfully." });
     })
     .catch(err => {
         res.status(500).send({
-            message: "Error updating Product with id=" + id
+            message: "Error updating Product Image with id=" + id
         });
     });
 };
@@ -104,13 +90,14 @@ exports.delete = (req, res) => {
 
     Gallery.findByIdAndRemove(id)
     .then(data => {
+        fs.unlinkSync('./assets/public/images/gallery/' + data.pic)
         if (!data) {
             res.status(404).send({
-            message: `Cannot delete Product with id=${id}. Maybe Product was not found!`
+                message: `Cannot delete Product with id=${id}. Maybe Product was not found!`
             });
         } else {
             res.send({
-            message: "Product was deleted successfully!"
+                message: "Product was deleted successfully!"
             });
         }
     })
@@ -121,17 +108,22 @@ exports.delete = (req, res) => {
     });
 };
 
-exports.deleteAll = (req, res) => {
-    Gallery.deleteMany({})
+exports.set_profile = async (req, res, next) => {
+    const id = req.params.id;
+    const idProduct = req.body.id_product
+    await Gallery.updateMany({ id_product: idProduct }, { is_profile: 0 });
+    //console.log(id, idProduct)
+    await Gallery.findByIdAndUpdate(id, req.body, { useFindAndModify: false })
     .then(data => {
-        res.send({
-            message: `${data.deletedCount} Product were deleted successfully!`
+    if (!data) {
+        res.status(404).send({
+            message: `Cannot update Product Image with id=${id}. Maybe Tutorial was not found!`
         });
+    } else res.send({ message: "Product Image was updated successfully." });
     })
     .catch(err => {
         res.status(500).send({
-            message:
-            err.message || "Some error occurred while removing all products."
+            message: "Error updating Product Image with id=" + id
         });
     });
-};
+}

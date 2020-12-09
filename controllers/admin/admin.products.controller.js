@@ -1,7 +1,6 @@
 const db = require("../../models");
 const Products = db.products;
 const site = require("../../middleware/site");
-const rand = require("../../library/randomString")
 
 exports.index = (req, res) => {
     site({ title: "Products", breadcrumb: [{"name":"Products", "url":"/admin/products"}]})
@@ -13,7 +12,7 @@ exports.data_table = async(req, res) => {
     const limit = parseInt(req.body.length)
     const page =  parseInt(req.body.start);
     criteria = { title: { $regex: new RegExp(txtsrc), $options: "i" } }
-    await Products.find(criteria).skip(0).limit(0).then(async data => {
+    await Products.find(criteria).skip(page).limit(limit).then(async data => {
         data = data.map(function(dt_){
             dt_.description = dt_.description.substring(0,100) + " ..."
             return dt_
@@ -34,19 +33,10 @@ exports.data_table = async(req, res) => {
 
 exports.add = async (req, res) => {
     if (Object.keys(req.body).length > 0){
-        let randName = rand(20)
-        if(req.files) {
-            let imgProd = req.files.pic;
-            let extName = imgProd.name.split('.').pop();
-            randName = randName + "." + extName;
-            imgProd.mv('./assets/public/products/' + randName);
-        }
-
         const cat = new Products({
             title: req.body.title,
             description: req.body.description,
             price: req.body.price,
-            pic: randName,
             categoryId: req.body.opt_category,
             published: req.body.published ? req.body.published : false
         });
@@ -74,15 +64,6 @@ exports.add = async (req, res) => {
 exports.update = async(req, res) => {
     const id = req.params.id;
     if (Object.keys(req.body).length > 0){
-        let randName = rand(20)
-        if(req.files) {
-            let imgProd = req.files.pic;
-            randName = randName + "." + imgProd.type;
-            imgProd.mv('./assets/public/products/' + randName);
-            req.body.pic = randName
-        }else{
-            delete req.body.pic
-        }
         let dataUpdate = {...req.body, categoryId: req.body.opt_category }
         await Products.findByIdAndUpdate(id, dataUpdate, { useFindAndModify: false });
         res.redirect("/admin/products")
@@ -128,6 +109,5 @@ exports.delete = (req, res) => {
         res.status(500).send({
             message: "Could not delete Product with id=" + id
         });
-    });
-
-};
+    })
+}

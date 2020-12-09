@@ -23,7 +23,7 @@ exports.index = async (req, res) => {
         });
     });
 
-    site({ title: "Settings", bradcumb: "settings"})
+    site({ title: "Settings", breadcrumb: "settings"})
 
     res.render("admin/pages/settings", { data } )
 };
